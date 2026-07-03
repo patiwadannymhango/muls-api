@@ -1,6 +1,8 @@
 from rest_framework import serializers
+
+from apps.accounts.tasks import send_verification_email_task
 from .tokens import email_verification_token
-from .utils import send_verification_email
+from .tasks import send_verification_email_task
 from .models import User
 
 
@@ -33,7 +35,13 @@ class RegisterSerializer(serializers.ModelSerializer):
 
         # send email
         # send_verification_email(user, token, verification_link)
-        send_verification_email(user, verification_link)
+        # send_verification_email(user, verification_link)
+
+        send_verification_email_task.delay(
+            user.email,
+            user.username,
+            verification_link
+        )
 
         return user
     

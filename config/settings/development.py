@@ -1,6 +1,8 @@
 from .base import *
 from decouple import config # pyright: ignore[reportMissingImports]
 
+
+
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
