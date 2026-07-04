@@ -28,7 +28,7 @@ class GetAllUsersView(generics.ListAPIView):
     
 
 class LogoutView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def post(self, request):
         try:
@@ -40,7 +40,7 @@ class LogoutView(APIView):
             return Response({"error": "Invalid token"}, status=400)
         
 class ChangePasswordView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def post(self, request):
         user = request.user

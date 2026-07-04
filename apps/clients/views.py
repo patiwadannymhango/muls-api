@@ -1,19 +1,19 @@
 from rest_framework import status, viewsets
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.filters import SearchFilter, OrderingFilter
-from .models import Project
+from .models import Client
 from rest_framework.response import Response
-from .serializers import ProjectSerializer
+from .serializers import ClientSerializer
 
 from django_filters.rest_framework import DjangoFilterBackend
 
-from .filters import ProjectFilter
+from .filters import ClientFilter
 
 
-class ProjectViewSet(viewsets.ModelViewSet):
+class ClientViewSet(viewsets.ModelViewSet):
 
-    serializer_class = ProjectSerializer
-    queryset = Project.objects.filter(
+    serializer_class = ClientSerializer
+    queryset = Client.objects.filter(
         is_active=True
     )
 
@@ -25,11 +25,12 @@ class ProjectViewSet(viewsets.ModelViewSet):
         OrderingFilter,
     )
 
-    filterset_class = ProjectFilter
+    filterset_class = ClientFilter
 
     search_fields = (
         "name",
-      
+        "email",
+        "phone_number",
     )
 
     ordering_fields = "__all__"
@@ -40,15 +41,15 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     # def destroy(self, request, *args, **kwargs):
 
-    #     project = self.get_object()
+    #     client = self.get_object()
 
-    #     project.is_active = False
+    #     client.is_active = False
 
-    #     project.save(update_fields=["is_active"])
+    #     client.save(update_fields=["is_active"])
 
     #     return Response(
     #         {
-    #             "detail": "Project deleted successfully."
+    #             "detail": "Client deleted successfully."
     #         },
     #         status=status.HTTP_204_NO_CONTENT,
     #     )

@@ -8,14 +8,17 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 
+# from apps.projects.views import ProjectViewSet
+# from apps.materials.views import MaterialViewSet
+from apps.clients.views import ClientViewSet
 from apps.projects.views import ProjectViewSet
-from apps.materials.views import MaterialViewSet
-
 
 router = DefaultRouter()
 
+
+# router.register(r'materials', MaterialViewSet)
 router.register(r'projects', ProjectViewSet)
-router.register(r'materials', MaterialViewSet)
+router.register(r'clients',ClientViewSet)
 
 urlpatterns = [
 

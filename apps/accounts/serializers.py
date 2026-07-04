@@ -1,6 +1,5 @@
 from rest_framework import serializers
 
-from apps.accounts.tasks import send_verification_email_task
 from .tokens import email_verification_token
 from .tasks import send_verification_email_task
 from .models import User
@@ -12,7 +11,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["email", "username", "password", "role"]
+        fields = ["email", "username", "password", "role","phone_number"]
 
     def create(self, validated_data):
         request = self.context.get("request")
@@ -21,6 +20,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             email=validated_data["email"],
             username=validated_data["username"],
             password=validated_data["password"],
+            phone_number=validated_data["phone_number"]
         )
 
         # ❗ disable login until verified
@@ -33,9 +33,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         # build verification link
         verification_link = f"http://127.0.0.1:8000/api/v1/auth/verify-email/{user.id}/{token}/"
 
-        # send email
-        # send_verification_email(user, token, verification_link)
-        # send_verification_email(user, verification_link)
 
         send_verification_email_task.delay(
             user.email,
